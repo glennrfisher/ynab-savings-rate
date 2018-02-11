@@ -27,8 +27,9 @@ const LOCAL_STORAGE_KEY = 'savings-rate-ids';
 const observer = new MutationObserver(_ => {
     if (!window.location.pathname.includes('/budget')) return;
     if (!document.querySelector('.ember-view')) return;
+    showResetButton();
+    showSaveButton();
     showSavingsRate();
-    showButton();
 });
 
 observer.observe(document.documentElement, { childList: true, subtree: true });
@@ -104,13 +105,28 @@ function showSavingsRate(rate) {
     description.innerText = 'Savings Rate';
 }
 
-function showButton() {
-    if (getCheckedCategories().length == 0) return;
-    if (document.querySelector('#savings-rate-button')) return;
+function showResetButton() {
+    if (getCheckedCategories().length > 0) return;
+    if (document.querySelector('#reset-savings-rate-button')) return;
     const optionGroups = document.querySelector('.option-groups');
     const div = document.createElement('div');
     const button = document.createElement('button');
-    button.id = 'savings-rate-button';
+    button.id = 'reset-savings-rate-button';
+    button.className = 'budget-inspector-button';
+    button.title = 'Reset the categories to use when calculating the savings rate.';
+    button.innerText = 'Reset Savings Categories';
+    button.addEventListener('click', saveCheckedCategories);
+    div.appendChild(button);
+    optionGroups.appendChild(div);
+}
+
+function showSaveButton() {
+    if (getCheckedCategories().length == 0) return;
+    if (document.querySelector('#set-savings-rate-button')) return;
+    const optionGroups = document.querySelector('.option-groups');
+    const div = document.createElement('div');
+    const button = document.createElement('button');
+    button.id = 'set-savings-rate-button';
     button.className = 'budget-inspector-button';
     button.title = 'Select the categories to use when calculating the savings rate.';
     button.innerText = 'Set Savings Categories';
