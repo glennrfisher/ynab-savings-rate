@@ -25,7 +25,7 @@ const LOCAL_STORAGE_KEY = 'savings-rate-ids';
  ***********************************************************************/
 
 const observer = new MutationObserver(_ => {
-    if (!window.location.pathname.endsWith('/budget')) return;
+    if (!window.location.pathname.includes('/budget')) return;
     if (!document.querySelector('.ember-view')) return;
     showSavingsRate();
     showButton();
